@@ -54,7 +54,13 @@ if __name__ == "__main__":
         sys.exit(0)
 
 def hook_command(name, function, help):
-    function(help.split(" "), [help, help.split(" ")[1]], None)
+    yo = help.split()
+    eol = []
+    tot = 0
+    for x in yo:
+        eol.append(yo[tot])
+        tot += 1
+    function(yo, eol, None)
     
 def command(command):
     split = command.replace(unicode("\x034",encoding='utf8'), "").split(" ")

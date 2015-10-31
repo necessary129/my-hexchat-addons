@@ -33,7 +33,6 @@ def saveconf():
     global ignores
     with open(path,'w') as fd:
         json.dump(ignores,fd,indent=4)
-    loadconf()
 
 def loadconf():
     global ignores
@@ -48,15 +47,17 @@ def setignorer(word, word_eol, userdata):
     global ignores
     if len(word) < 2:
         hexchat.prnt("Need a host maaan")
+        return 
     ignores.append(word[1])
     hexchat.prnt('host {0} successfully added to ignore list'.format(word[1]))
     saveconf()
-    return hexchat.EAT_NONE
+
 def on_nick(word, word_eol, userdata):
+    global ignores
     host =word[0].split('@')[1]
     if host in ignores:
         return hexchat.EAT_ALL
-    return hexchat.EAT_NONE
+
 
 def unset(word, word_eol, userdata):
     global ignores
@@ -68,10 +69,18 @@ def unset(word, word_eol, userdata):
     ignores.remove(word[1])
     hexchat.prnt('host {0} successfully removed from ignore list'.format(word[1]))
     saveconf()
-    return hexchat.EAT_NONE
+
+
+def listi(word, word_eol, userdata):
+    global ignores
+    alli = " ,".join(ignores)
+    toprnt = "Ignored hosts are: "+alli if ignores else "No hosts are ignored"
+    hexchat.prnt(toprnt)
+
 
 loadconf()
 hexchat.hook_server('NICK',on_nick,priority=hexchat.PRI_HIGHEST)
 hexchat.hook_command('NIGNORE',setignorer,help="/nignore <host>")
 hexchat.hook_command('UNNIGNORE',unset,help="/unnignore <host>")
+hexchat.hook_command('LNIGNORE',listi,help='/lnignore')
 print("{0} module version {1} by {2} loaded.".format(__module_name__, __module_version__, __module_author__))
