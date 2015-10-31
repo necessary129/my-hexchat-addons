@@ -80,12 +80,16 @@ def listi(word, word_eol, userdata):
 
 help = {
     "nignore": """/NIGNORE <host>
+    eg: /NIGNORE 12.34.spammer.com
     Ignores the nick changes made by <host> (even the user list won't change)
     To deactivate, see /help UNNIGNORE
     See also: /help UNNIGNORE, /help LNIGNORE""",
+
     "unnignore": """/UNNIGNORE <host>
+    eg: /UNNIGNORE 12.34.spammer.com
     Removes <host> from the nick change ignore list
     See also: /help NIGNORE, /help LIGNORE""",
+
     "lnignore": """/LNIGNORE
     Shows the hosts currently ignore by the /NIGNORE hook_command
     See also: /help NIGNORE, /help UNNIGNORE"""
