@@ -96,10 +96,15 @@ help = {
 def unhook(dt):
     if hook:
         hexchat.unhook(hook)
+
+def unload_cb(dt):
+    hexchat.prnt("{0} module is unloaded".format(__module_name__))
+
 loadconf()
 hook = hexchat.hook_server('NICK',on_nick,priority=hexchat.PRI_HIGHEST)
 hexchat.hook_command('NIGNORE',setignorer,help=help['nignore'])
 hexchat.hook_command('UNNIGNORE',unset,help=help['unnignore'])
 hexchat.hook_command('LNIGNORE',listi,help=help['lnignore'])
 hexchat.hook_unload(unhook)
+hexchat.hook_unload(unload_cb)
 print("{0} module version {1} by {2} loaded.".format(__module_name__, __module_version__, __module_author__))
