@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 #Copyright (c) 2015 noteness
 #Copyright (c) 2015 Jesús "JeDa" Hernández
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -14,13 +15,6 @@
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
-
-import sys
-py_version = sys.version_info
-major = int(py_version [0])
-if major == 2:
-    from __future__ import print_function
-    from __future__ import unicode_literals
 
 EAT_PLUGIN = 1
 EAT_HEXCHAT = 1
