@@ -14,7 +14,12 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE
-
+import sys
+py_version = sys.version_info
+major = int(py_version [0])
+if major == 2:
+    from __future__ import print_function
+    from __future__ import unicode_literals
 import hexchat
 __module_name__ = 'Nick Ignore'
 __module_version__ = '0.0.1'

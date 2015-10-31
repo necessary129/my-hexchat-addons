@@ -15,6 +15,13 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
 
+import sys
+py_version = sys.version_info
+major = int(py_version [0])
+if major == 2:
+    from __future__ import print_function
+    from __future__ import unicode_literals
+
 EAT_PLUGIN = 1
 EAT_HEXCHAT = 1
 EAT_ALL = 1
@@ -55,7 +62,7 @@ def hook_command(name, function, help):
     function(help.split(" "), [help, help.split(" ")[1]], None)
     
 def command(command):
-    split = command.replace("\x034", "").split(" ")
+    split = command.replace(unicode("\x034",encoding='utf8'), "").split(" ")
     if split[0] == "say":
         print("<testuser> {0}".format(command.replace(split[0] + " ", "")))
     elif split[0] == "me":
