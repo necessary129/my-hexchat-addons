@@ -19,7 +19,7 @@ import os.path
 import sys
 
 __module_name__ = 'Nick Ignore'
-__module_version__ = '0.0.1'
+__module_version__ = '0.2.1'
 __module_description__ = 'Ignores nick changes.'
 __module_author__ = 'noteness'
 ignores = []
@@ -46,7 +46,7 @@ def loadconf():
 def setignorer(word, word_eol, userdata):
     global ignores
     if len(word) < 2:
-        hexchat.prnt("Need a host maaan")
+        hexchat.command('HELP NIGNORE')
         return 
     ignores.append(word[1])
     hexchat.prnt('host {0} successfully added to ignore list'.format(word[1]))
@@ -62,7 +62,8 @@ def on_nick(word, word_eol, userdata):
 def unset(word, word_eol, userdata):
     global ignores
     if len(word) < 2:
-        hexchat.prnt("Need a host maaan")
+        hexchat.command('HELP UNNIGNORE')
+        return
     if word[1] not in ignores:
         hexchat.prnt('I am not ignoring that host')
         return hexchat.EAT_NONE
