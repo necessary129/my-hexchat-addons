@@ -63,7 +63,7 @@ def hook_command(name, function, help):
     function(yo, eol, None)
     
 def command(command):
-    split = command.replace(unicode("\x034",encoding='utf8'), "").split(" ")
+    split = command.replace("\x034", "").split(" ")
     if split[0] == "say":
         print("<testuser> {0}".format(command.replace(split[0] + " ", "")))
     elif split[0] == "me":
