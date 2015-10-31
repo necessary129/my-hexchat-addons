@@ -29,6 +29,7 @@ def setignorer(word, word_eol, userdata):
     hexchat.prnt('host {0} successfully added to ignore list'.format(word[1]))
     return hexchat.EAT_NONE
 def on_nick(word, word_eol, userdata):
+    host =word[0].split('@')[1]
     if host in ignores:
         return hexchat.EAT_ALL
     return hexchat.EAT_NONE
