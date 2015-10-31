@@ -3,5 +3,10 @@ sudo: false
 python:
   - "2.7"
   - "3.4"
-
+notifications:
+    irc:
+        channels:
+            - "irc.freenode.net##noteness-git"
+        on_success: always
+        on_failure: always
 script: "python hexchat.py"
