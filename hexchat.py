@@ -48,3 +48,5 @@ def hook_server(raw,func,priority):
         func(testword,testwordeol,testdata)
 def prnt(stri):
     print(stri)
+PRI_HIGHEST = 1
+
