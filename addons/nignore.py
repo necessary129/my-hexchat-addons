@@ -15,7 +15,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE
 import hexchat
-import os.path
 import sys
 import fnmatch
 __module_name__ = 'Nick Ignore'
@@ -23,24 +22,20 @@ __module_version__ = '0.2.1'
 __module_description__ = 'Ignores nick changes.'
 __module_author__ = 'noteness'
 ignores = []
-import json
 hook = None
 
-path = os.path.join(os.path.expanduser('~'),'ignores.json')
-if not os.path.exists(path):
-    open(path,'w').close()
 def saveconf():
     global ignores
-    with open(path,'w') as fd:
-        json.dump(ignores,fd,indent=4)
+    hexchat.set_pluginpref('nignore_ignores', ",".join(ignores))
 
 def loadconf():
     global ignores
-    with open(path) as fd:
-        try:
-            ignores = json.load(fd)
-        except ValueError:
-            ignores = []
+    ign = hexchat.get_pluginpref('nignore_ignores')
+    if ign:
+        ignores = ign.split(',')
+    else:
+        ignores = []
+
 
 
 def setignorer(word, word_eol, userdata):
