@@ -45,7 +45,7 @@ def loadconf():
 
 def setignorer(word, word_eol, userdata):
     global ignores
-    if len(word) < 2:
+    if len(word) !=  2:
         hexchat.command('HELP NIGNORE')
         return 
     ignores.append(word[1])
@@ -61,7 +61,7 @@ def on_nick(word, word_eol, userdata):
 
 def unset(word, word_eol, userdata):
     global ignores
-    if len(word) < 2:
+    if len(word)  != 2 :
         hexchat.command('HELP UNNIGNORE')
         return
     if word[1] not in ignores:
