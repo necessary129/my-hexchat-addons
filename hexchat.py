@@ -33,7 +33,7 @@ if __name__ == "__main__":
     print("HexChat addons test script.")
     print("There might be weird stuff. Don't worry. :)\n")
     for val in os.listdir("addons"):
-        if val.endswith('__'):
+        if val.startswith('__'):
             continue
         if val.endswith('.pyc'):
             continue
@@ -43,6 +43,7 @@ if __name__ == "__main__":
             __import__('addons.{0}'.format(val), globals=globals())
             print("{0} is WORKING.".format(val))
         except Exception as err:
+            __import__('traceback').print_exc()
             print("{0} is FAILING. ({1})".format(val, err))
             broken = 1
     if broken == 1:
