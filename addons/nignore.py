@@ -77,10 +77,23 @@ def listi(word, word_eol, userdata):
     toprnt = "Ignored hosts are: "+alli if ignores else "No hosts are ignored"
     hexchat.prnt(toprnt)
 
+help = {
+    "nignore": """/NIGNORE <host>
+    Ignores the nick changes made by <host> (even the user list won't change)
+    To deactivate, see /help UNNIGNORE
+    See also: /help UNNIGNORE, /help LNIGNORE""",
+    "unnignore": """/UNNIGNORE <host>
+    Removes <host> from the nick change ignore list
+    See also: /help NIGNORE, /help LIGNORE""",
+    "lnignore": """/LNIGNORE
+    Shows the hosts currently ignore by the /NIGNORE hook_command
+    See also: /help NIGNORE, /help UNNIGNORE"""
+}
+
 
 loadconf()
 hexchat.hook_server('NICK',on_nick,priority=hexchat.PRI_HIGHEST)
-hexchat.hook_command('NIGNORE',setignorer,help="/nignore <host>")
-hexchat.hook_command('UNNIGNORE',unset,help="/unnignore <host>")
-hexchat.hook_command('LNIGNORE',listi,help='/lnignore')
+hexchat.hook_command('NIGNORE',setignorer,help=help['nignore'])
+hexchat.hook_command('UNNIGNORE',unset,help=help['unnignore'])
+hexchat.hook_command('LNIGNORE',listi,help=help['lnignore'])
 print("{0} module version {1} by {2} loaded.".format(__module_name__, __module_version__, __module_author__))
