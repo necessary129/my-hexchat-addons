@@ -1,16 +1,41 @@
-"""
-This script tests the addons.
+#Copyright (c) 2015 noteness
+#Copyright (c) 2015 Jesús "JeDa" Hernández
+#Permission is hereby granted, free of charge, to any person obtaining a copy
+#of this software and associated documentation files (the "Software"), to deal
+#in the Software without restriction, including without limitation the rights
+#to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#copies of the Software, and to permit persons to whom the Software is
+#furnished to do so, subject to the following conditions:
 
-You *SHOULDN'T* load this on your HexChat. :)
-"""
+#THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#SOFTWARE.
+
+EAT_PLUGIN = 1
+EAT_HEXCHAT = 1
+EAT_ALL = 1
+EAT_NONE = 1
+PRI_HIGHEST = 1
+PRI_HIGH = 1
+PRI_NORM = 1
+PRI_LOW = 1
+PRI_LOWEST = 1
 
 if __name__ == "__main__":
     import os
     import sys
     broken = 0
     print("HexChat addons test script.")
-    print("There might been shown weird stuff. Don't worry. :)\n")
+    print("There might be weird stuff. Don't worry. :)\n")
     for val in os.listdir("addons"):
+        if val.endswith('__'):
+            continue
+        if val.endswith('.pyc'):
+            continue
         val = val.replace(".py", "")
         print("Testing {0}".format(val))
         try:
@@ -20,10 +45,10 @@ if __name__ == "__main__":
             print("{0} is FAILING. ({1})".format(val, err))
             broken = 1
     if broken == 1:
-        print("\nThere's broken addons. :(")
+        print("\nThere are broken addons. :(")
         sys.exit(1)
     else:
-        print("\nAll is fine. :)")
+        print("\nEverything is fine. :)")
         sys.exit(0)
 
 def hook_command(name, function, help):
@@ -48,5 +73,5 @@ def hook_server(raw,func,priority):
         func(testword,testwordeol,testdata)
 def prnt(stri):
     print(stri)
-PRI_HIGHEST = 1
+
 
