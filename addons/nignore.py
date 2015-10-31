@@ -91,6 +91,7 @@ help = {
     See also: /help NIGNORE, /help LIGNORE""",
 
     "lnignore": """/LNIGNORE
+    eg: /LNIGNORE
     Shows the hosts currently ignore by the /NIGNORE hook_command
     See also: /help NIGNORE, /help UNNIGNORE"""
 }

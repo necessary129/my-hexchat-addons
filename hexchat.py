@@ -25,7 +25,8 @@ PRI_HIGH = 1
 PRI_NORM = 1
 PRI_LOW = 1
 PRI_LOWEST = 1
-
+import re
+cmd_pattern = re.compile(r'eg: /(.+)', re.MULTILINE)
 if __name__ == "__main__":
     import os
     import sys
@@ -54,7 +55,7 @@ if __name__ == "__main__":
         sys.exit(0)
 
 def hook_command(name, function, help):
-    yo = help.split()
+    yo = cmd_pattern.search(help).group(1).split()
     eol = []
     tot = 0
     for x in yo:
