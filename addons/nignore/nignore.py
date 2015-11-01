@@ -17,7 +17,7 @@
 import hexchat
 import sys
 import fnmatch
-__module_name__ = 'Nick Ignore'
+__module_name__ = 'NIgnore'
 __module_version__ = '0.2.4'
 __module_description__ = 'Ignores nick changes.'
 __module_author__ = 'noteness'
@@ -26,26 +26,49 @@ hook = None
 
 def saveconf():
     global ignores
-    hexchat.set_pluginpref('nignore_ignores', ",".join(ignores))
+    hexchat.set_pluginpref(__module_name__+'_ignores', ",".join(ignores))
 
 def loadconf():
     global ignores
-    ign = hexchat.get_pluginpref('nignore_ignores')
+    ign = hexchat.get_pluginpref(__module_name__+'_ignores')
     if ign:
         ignores = ign.split(',')
     else:
         ignores = []
 
-
-
 def setignorer(word, word_eol, userdata):
     global ignores
     if len(word) !=  2:
-        hexchat.command('HELP NIGNORE')
+        hexchat.command('HELP '+ word[0])
         return 
     ignores.append(word[1])
     hexchat.prnt('user {0} successfully added to ignore list'.format(word[1]))
     saveconf()
+
+def unset(word, word_eol, userdata):
+    global ignores
+    if len(word)  != 2 :
+        hexchat.command('HELP '+ word[0])
+        return
+    num =int(word[1])
+    if  not len(ignores) >= num:
+        hexchat.prnt('Are you sure that a such index is there?')
+        return hexchat.EAT_NONE
+    temp = ignores[num]
+    del ignores[num]
+    hexchat.prnt('user {0} successfully removed from ignore list'.format(temp))
+    saveconf()
+
+
+def listi(word, word_eol, userdata):
+    global ignores
+    allo = []
+    for x in ignores:
+        num = str(ignores.index(x)) + ": " + x
+        allo.append(num)
+    alli = ", ".join(allo)
+    toprnt = "Ignored users are: "+alli if ignores else "No hosts are ignored"
+    hexchat.prnt(toprnt)
 
 def on_nick(word, word_eol, userdata):
     global ignores
@@ -54,31 +77,6 @@ def on_nick(word, word_eol, userdata):
         if fnmatch.fnmatch(host, x):
             return hexchat.EAT_ALL
     return hexchat.EAT_NONE
-
-
-def unset(word, word_eol, userdata):
-    global ignores
-    if len(word)  != 2 :
-        hexchat.command('HELP UNNIGNORE')
-        return
-    num =int(word[1])
-    if  not len(ignores) >= num:
-        hexchat.prnt('Are you sure that a such index is there?')
-        return hexchat.EAT_NONE
-    del ignores[num]
-    hexchat.prnt('user {0} successfully removed from ignore list'.format(ignores[num]))
-    saveconf()
-
-
-def listi(word, word_eol, userdata):
-    global ignores
-    allo = []
-    for x in ignores:
-        num = ignores.index(x) + ". " + x
-        allo.append(num)
-    alli = ", ".join(allo)
-    toprnt = "Ignored users are: "+alli if ignores else "No hosts are ignored"
-    hexchat.prnt(toprnt)
 
 help = {
     "nignore": """/NIGNORE <nick>!<ident>@<host> (Wildcards accepted)
@@ -108,8 +106,8 @@ def unload_cb(dt):
 loadconf()
 hook = hexchat.hook_server('NICK',on_nick,priority=hexchat.PRI_HIGHEST)
 hexchat.hook_command('NIGNORE',setignorer,help=help['nignore'])
-hexchat.hook_command('UNNIGNORE',unset,help=help['unnignore'])
 hexchat.hook_command('LNIGNORE',listi,help=help['lnignore'])
+hexchat.hook_command('UNNIGNORE',unset,help=help['unnignore'])
 hexchat.hook_unload(unhook)
 hexchat.hook_unload(unload_cb)
 print("{0} module version {1} by {2} loaded.".format(__module_name__, __module_version__, __module_author__))
