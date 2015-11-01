@@ -38,13 +38,29 @@ if __name__ == "__main__":
             continue
         if val.endswith('.pyc'):
             continue
+        if os.path.isdir(os.path.join('addons',val)):
+            for x in os.listdir(os.path.join('addons',val)):
+                if not x.endswith('.py'):
+                    continue
+                if x.startswith('__'):
+                    continue
+                x = x.replace('.py','')
+                x = "{0}.{1}".format(val, x)
+                print("Testing {0}".format(x))
+                try:
+                    __import__('addons.{0}'.format(x), globals=globals())
+                    print("{0} is WORKING.".format(x))
+                except Exception as err:
+                    print("{0} is FAILING. ({1})".format(x, err))
+                    broken = 1
+        if not val.endswith('.py'):
+            continue
         val = val.replace(".py", "")
         print("Testing {0}".format(val))
         try:
             __import__('addons.{0}'.format(val), globals=globals())
             print("{0} is WORKING.".format(val))
         except Exception as err:
-            __import__('traceback').print_exc()
             print("{0} is FAILING. ({1})".format(val, err))
             broken = 1
     if broken == 1:
