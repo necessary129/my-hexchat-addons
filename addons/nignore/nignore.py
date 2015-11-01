@@ -18,7 +18,7 @@ import hexchat
 import sys
 import fnmatch
 __module_name__ = 'Nick Ignore'
-__module_version__ = '0.2.1'
+__module_version__ = '0.2.2'
 __module_description__ = 'Ignores nick changes.'
 __module_author__ = 'noteness'
 ignores = []
@@ -62,7 +62,7 @@ def unset(word, word_eol, userdata):
         hexchat.command('HELP UNNIGNORE')
         return
     if word[1] not in ignores:
-        hexchat.prnt('I am not ignoring that host')
+        hexchat.prnt('I am not ignoring that user')
         return hexchat.EAT_NONE
     ignores.remove(word[1])
     hexchat.prnt('user {0} successfully removed from ignore list'.format(word[1]))
