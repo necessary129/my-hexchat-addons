@@ -18,7 +18,7 @@ import hexchat
 import sys
 import fnmatch
 __module_name__ = 'Nick Ignore'
-__module_version__ = '0.2.2'
+__module_version__ = '0.2.4'
 __module_description__ = 'Ignores nick changes.'
 __module_author__ = 'noteness'
 ignores = []
@@ -61,17 +61,22 @@ def unset(word, word_eol, userdata):
     if len(word)  != 2 :
         hexchat.command('HELP UNNIGNORE')
         return
-    if word[1] not in ignores:
-        hexchat.prnt('I am not ignoring that user')
+    num =int(word[1])
+    if  not len(ignores) >= num:
+        hexchat.prnt('Are you sure that a such index is there?')
         return hexchat.EAT_NONE
-    ignores.remove(word[1])
-    hexchat.prnt('user {0} successfully removed from ignore list'.format(word[1]))
+    del ignores[num]
+    hexchat.prnt('user {0} successfully removed from ignore list'.format(ignores[num]))
     saveconf()
 
 
 def listi(word, word_eol, userdata):
     global ignores
-    alli = " ,".join(ignores)
+    allo = []
+    for x in ignores:
+        num = ignores.index(x) + ". " + x
+        allo.append(num)
+    alli = ", ".join(allo)
     toprnt = "Ignored users are: "+alli if ignores else "No hosts are ignored"
     hexchat.prnt(toprnt)
 
@@ -82,14 +87,14 @@ help = {
     To deactivate, see /help UNNIGNORE
     See also: /help UNNIGNORE, /help LNIGNORE""",
 
-    "unnignore": """/UNNIGNORE <nick>!<ident>@<host> (Wildcards accepted)
-    eg: /UNNIGNORE *!*@*12.34.spammer.com
+    "unnignore": """/UNNIGNORE <index>
+    eg: /UNNIGNORE 0
     Removes the user from the nick change ignore list
     See also: /help NIGNORE, /help LIGNORE""",
 
     "lnignore": """/LNIGNORE
     eg: /LNIGNORE
-    Shows the users currently ignore by the /NIGNORE hook_command
+    Shows the users currently ignore by the /NIGNORE command
     See also: /help NIGNORE, /help UNNIGNORE"""
 }
 
