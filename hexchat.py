@@ -95,13 +95,14 @@ if __name__ == "__main__":
         sys.exit(0)
 
 def hook_command(name, function, help):
-    yo = cmd_pattern.search(help).group(1).split()
+    yo = cmd_pattern.search(help).group(1)
     eol = []
     tot = 0
-    for x in yo:
-        eol.append(yo[tot])
+    word = yo.split()
+    for x in word:
+        eol.append(yo.split(" ", tot)[-1])
         tot += 1
-    function(yo, eol, None)
+    function(word, eol, None)
     
 def command(command):
     split = command.replace("\x034", "").split(" ")
@@ -114,13 +115,25 @@ def command(command):
     elif split[0] == "notice":
         print("->{0}<- {1}".format(split[1], command.replace(split[0] + " ", "").replace(split[1] + " ", "")))
 
-testword = [':Slavetator!noteness@unaffiliated/nessessary129/bot/slavetator', 'NICK', ':Slavetator___']
-testwordeol = [':Slavetator!noteness@unaffiliated/nessessary129/bot/slavetator NICK :Slavetator___', 'NICK :Slavetator___', ':Slavetator___']
-testdata = None
 
+words ={
+    "nick": [':Slavetator!noteness@unaffiliated/nessessary129/bot/slavetator', 'NICK', ':Slavetator___'],
+    "kick":[':Slavetator!noteness@unaffiliated/nessessary129/bot/slavetator', 'KICK', 'noteness',':You should know better'],
+
+}
+wordeols = {
+    "nick": [':Slavetator!noteness@unaffiliated/nessessary129/bot/slavetator NICK :Slavetator___', 'NICK :Slavetator___', ':Slavetator___'],
+    "kick": [':Slavetator!noteness@unaffiliated/nessessary129/bot/slavetator KICK noteness :You should know better','KICK noteness :You should know better','noteness :You should know better',':You should know better']
+}
+datas = {
+    
+}
 def hook_server(raw,func,priority):
-    if raw == 'NICK':
-        func(testword,testwordeol,testdata)
+    raw = raw.lower()
+    word = words.get(raw, None)
+    wordeol = wordeols.get(raw ,None)
+    data = datas.get(raw, None)
+    func(word, wordeol, data)
 def prnt(stri):
     print(stri)
 
