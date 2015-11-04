@@ -17,9 +17,9 @@
 import hexchat
 import sys
 import fnmatch
-__module_name__ = 'NIgnore'
-__module_version__ = '0.2.4'
-__module_description__ = 'Ignores nick changes.'
+__module_name__ = 'CIgnore'
+__module_version__ = '0.1.0'
+__module_description__ = 'Strips color codes from a specific nick'
 __module_author__ = 'noteness'
 ignores = []
 hook = None
@@ -69,47 +69,9 @@ def listi(word, word_eol, userdata):
     alli = ", ".join(allo)
     toprnt = "Ignored users are: "+alli if ignores else "No hosts are ignored"
     hexchat.prnt(toprnt)
-
-def on_nick(word, word_eol, userdata):
+def on_privmsg(word, word_eol, userdata):
     global ignores
     host =word[0]
     for x in ignores:
         if fnmatch.fnmatch(host, x):
-            return hexchat.EAT_ALL
-    return hexchat.EAT_NONE
-
-help = {
-    "nignore": """/NIGNORE <nick>!<ident>@<host> (Wildcards accepted)
-    eg: /NIGNORE *!*@*12.34.spammer.com
-    eg: /NIGNORE *!*@*/bot/*
-    Ignores the nick changes made by the user (even the user list won't change)
-    To deactivate, see /help UNNIGNORE
-    See also: UNNIGNORE, LNIGNORE""",
-
-    "unnignore": """/UNNIGNORE <index>
-    eg: /UNNIGNORE 0
-    Removes the user from the nick change ignore list
-    See also: NIGNORE, LIGNORE""",
-
-    "lnignore": """/LNIGNORE
-    eg: /LNIGNORE
-    Shows the users currently ignore by the /NIGNORE command
-    See also: NIGNORE, UNNIGNORE"""
-}
-
-def unhook(dt):
-    if hook:
-        hexchat.unhook(hook)
-
-def unload_cb(dt):
-    hexchat.prnt("{0} module is unloaded".format(__module_name__))
-
-loadconf()
-
-hexchat.hook_command('NIGNORE',setignorer,help=help['nignore'])
-hexchat.hook_command('LNIGNORE',listi,help=help['lnignore'])
-hook = hexchat.hook_server('NICK',on_nick,priority=hexchat.PRI_HIGHEST)
-hexchat.hook_command('UNNIGNORE',unset,help=help['unnignore'])
-hexchat.hook_unload(unhook)
-hexchat.hook_unload(unload_cb)
-print("{0} module version {1} by {2} loaded.".format(__module_name__, __module_version__, __module_author__))
+            pass
