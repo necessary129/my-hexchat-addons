@@ -69,9 +69,20 @@ def listi(word, word_eol, userdata):
     alli = ", ".join(allo)
     toprnt = "Ignored users are: "+alli if ignores else "No hosts are ignored"
     hexchat.prnt(toprnt)
-def on_privmsg(word, word_eol, userdata):
+def on_msg(word, word_eol, event):
+    erro = []
     global ignores
-    host =word[0]
+    host = word[0]
     for x in ignores:
         if fnmatch.fnmatch(host, x):
-            pass
+            for x in word:
+                erro.append(hexchat.strip(x,flags=1))
+            hexchat.emit_print(event, *erro)
+            return hexchat.EAT_ALL
+    return hexchat.EAT_NONE
+            
+hooks = ['Channel Message','Channel Msg Hilight','Private Action','Private Action to Dialog','Private Message','Private Message to Dialog','Channel Action','Channel Action Hilight']
+for hook in hooks:
+    hexchat.hook_print(hook, on_msg, priority=hexchat.PRI_HIGHEST)
+
+loadconf()

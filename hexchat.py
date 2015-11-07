@@ -29,6 +29,8 @@ import re
 import traceback
 import threading
 import socket
+import os
+import os.path
 locky = threading.RLock()
 cmd_pattern = re.compile(r'eg: /(.+)', re.MULTILINE)
 
@@ -67,6 +69,8 @@ if __name__ == "__main__":
     print("HexChat addons test script.")
     print("There might be weird stuff. Don't worry. :)\n")
     for val in os.listdir("addons"):
+        path = os.path.join('addons','__init__.py')
+        open(path,'w').close()
         if val.startswith('__'):
             continue
         if val.endswith('.pyc'):
@@ -80,9 +84,12 @@ if __name__ == "__main__":
                 x = x.replace('.py','')
                 x = "{0}.{1}".format(val, x)
                 print("Testing {0}".format(x))
+                ppath = os.path.join('addons',val,'__init__.py')
+                open(ppath, 'w').close()
                 try:
                     __import__('addons.{0}'.format(x), globals=globals())
                     print("{0} is WORKING.".format(x))
+                    os.remove(ppath)
                 except Exception as err:
                     errurl = pastebin(traceback.format_exc())
                     print("{0} is FAILING. ({1}: {2})".format(x, err, errurl))
@@ -98,6 +105,7 @@ if __name__ == "__main__":
         except Exception as err:
             print("{0} is FAILING. ({1})".format(val, err))
             broken = 1
+    os.remove(path)
     if broken == 1:
         print("\nThere are broken addons. :(")
         sys.exit(1)
@@ -126,6 +134,7 @@ def command(command):
 rlines ={
     "nick": ':Slavetator!noteness@unaffiliated/nessessary129/bot/slavetator NICK :Slavetator___',
     "kick":':Slavetator!noteness@unaffiliated/nessessary129/bot/slavetator KICK noteness :You should know better',
+    "priv": ':Slavetator!noteness@unaffiliated/nessessary129/bot/slavetator PRIVMSG #Slavetator-test :Hello'
 
 }
 
@@ -145,6 +154,15 @@ def hook_server(raw,func,priority):
         print('*** We recieves <-- '+raws )
     elif bb == EAT_PLUGIN:
         print("*** Current Plugin stops processing")
+
+
+def hook_print(name, func, priority):
+    raws = rlines['priv']
+    word, eol = parse(raws)
+    func(word, eol, name)
+
+def hook_timer(time, func, userdata=None):
+    func(userdata)
 def prnt(stri):
     print(stri)
 
