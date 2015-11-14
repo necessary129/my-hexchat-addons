@@ -73,5 +73,5 @@ if diff >= week:
 else:
     hook = hexchat.hook_timer(diff, time_cb)
 
-hexchat.prnt("{0} module v{1} loaded".format(__module_name__, __module_author__))
+hexchat.prnt("{0} module v{1} loaded".format(__module_name__, __module_version__))
 hexchat.hook_unload(unload_cb)
