@@ -19,7 +19,7 @@ import hexchat
 from datetime import timedelta
 import time
 __module_name__ = 'xkeep'
-__module_version__ = '0.1-dev'
+__module_version__ = '0.2-dev'
 __module_description__ = 'Keeps your account in xshellz.'
 __module_author__ = 'noteness'
 
@@ -52,23 +52,24 @@ getlstkeep()
 diff = timedelta(seconds=now) - timedelta(seconds=lastkeep)
 diff = (diff.days*24*60*60) + (diff.seconds)
 
-def time_cb(_):
+def time_cb(txt):
     global week
     global hook
     channel = hexchat.find_context(channel='#xshellz')
-    channel.command('say !keep {0}'.format(username))
+    channel.command('say {1} {0}'.format(username,txt))
     update()
     if hook:
         hexchat.unhook(hook)
-    hook = hexchat.hook_timer((week*1000),time_cb)
+    hook = hexchat.hook_timer((week*1000),time_cb,userdata='!keep')
 
 def unload_cb(_):
     hexchat.prnt("{0} module v{1} unloaded".format(__module_name__, __module_version__))
-
+if diff >= (week*2):
+    time_cb('!approve')
 if diff >= week:
-    time_cb(None)
+    time_cb('!keep')
 else:
     dif = week - diff
-    hook = hexchat.hook_timer((dif*1000),time_cb)
+    hook = hexchat.hook_timer((dif*1000),time_cb,userdata='!keep')
 hexchat.prnt("{0} module v{1} loaded".format(__module_name__, __module_version__))
 hexchat.hook_unload(unload_cb)
