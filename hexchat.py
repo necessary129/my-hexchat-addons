@@ -31,6 +31,7 @@ import threading
 import socket
 import os
 import os.path
+import sys
 locky = threading.RLock()
 cmd_pattern = re.compile(r'eg: /(.+)', re.MULTILINE)
 
@@ -64,7 +65,7 @@ def pastebin(tb):
             return url
 if __name__ == "__main__":
     import os
-    import sys
+
     broken = 0
     print("HexChat addons test script.")
     print("There might be weird stuff. Don't worry. :)\n")
@@ -160,9 +161,14 @@ def hook_print(name, func, priority):
     raws = rlines['priv']
     word, eol = parse(raws)
     func(word, eol, name)
-
+calls = {}
 def hook_timer(time, func, userdata=None):
+    global calls
+    if time in calls:
+        return
+    calls[time] = 1
     func(userdata)
+    
 def prnt(stri):
     print(stri)
 
@@ -172,5 +178,26 @@ def set_pluginpref(_,__):
     pass
 def hook_unload(_):
     pass
+class dupe:
+    def command(self,cmd):
+        return
 
+def find_context(server=None,channel=None):
+    global calls
+    if server and channel:
+        if server + channel in calls:
+            return dupe()
+        calls[server + channel] = 1
+    if channel:
+        if channel in calls:
+            return dupe()
+        calls[channel] = 1
+    if server:
+        if server in calls:
+            return dupe()
+        calls[server] = 1
+    return sys.modules[__name__]
+
+def getcontext():
+    return sys.modules[__name__]
 

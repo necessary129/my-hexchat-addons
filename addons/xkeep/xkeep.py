@@ -23,7 +23,7 @@ __module_version__ = '0.1-dev'
 __module_description__ = 'Keeps your account in xshellz.'
 __module_author__ = 'noteness'
 
-week = 604800
+week = 5
 now = time.time()
 lastkeep = 1
 
