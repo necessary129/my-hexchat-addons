@@ -50,7 +50,7 @@ def update():
 
 getlstkeep()
 diff = timedelta(seconds=now) - timedelta(seconds=lastkeep)
-diff = (diff.days *60*60) + (diff.seconds)
+diff = (diff.days*24*60*60) + (diff.seconds)
 
 def time_cb(_):
     global week
