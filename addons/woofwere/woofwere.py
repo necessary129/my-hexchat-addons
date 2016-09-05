@@ -20,7 +20,7 @@ import hexchat
 import ast
 
 __module_name__ = 'WereHelper'
-__module_version__ = '0.0.3'
+__module_version__ = '0.0.5'
 __module_description__ = 'Werewolf game helper.'
 __module_author__ = 'noteness'
 
@@ -117,24 +117,27 @@ def l():
         " is" if len(safes) == 1 else "s are"))
 
 @command("safe add", args=1)
-def sadd(safe):
+def sadd(*nsafe):
     global safes
-    if safe in safes:
-        print("'{}' is already in safes.".format(safe))
-        return
-    safes.append(safe)
+    for safe in nsafe:
+        if safe in safes:
+            print("'{}' is already in safes.".format(safe))
+            continue
+        safes.append(safe)
+        print("'{}' added to safes.".format(safe))
     save_safe()
-    print("'{}' added to safes.".format(safe))
+
 
 @command("safe del", args=1)
-def sadd(safe):
+def sadd(*nsafe):
     global safes
-    if safe not in safes:
-        print("'{}' isn't in safes.".format(safe))
-        return
-    safes.remove(safe)
+    for safe in nsafe:
+        if safe not in safes:
+            print("'{}' isn't in safes.".format(safe))
+            continue
+        print("'{}' removed from safes.".format(safe))
+        safes.remove(safe)
     save_safe()
-    print("'{}' removed from safes.".format(safe))
 
 hexchat.hook_command("", notice_override)
 hexchat.hook_command("WW", ww, help="AA")
