@@ -114,11 +114,12 @@ if __name__ == "__main__":
         print("\nEverything is fine. :)")
         sys.exit(0)
 
-def hook_command(name, function, help):
-    yo = cmd_pattern.findall(help)
-    for each in yo:
-        word, eol = parse(each)
-        function(word, eol, None)
+def hook_command(name, function, help=None):
+    if help:
+        yo = cmd_pattern.findall(help)
+        for each in yo:
+            word, eol = parse(each)
+            function(word, eol, None)
     
 def command(command):
     split = command.replace("\x034", "").split(" ")
